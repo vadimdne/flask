@@ -40,4 +40,4 @@ def login():
         return redirect("/login/form", code=302)
 
 
-    app.run(host="0.0.0.0", port=80)
+app.run(host="0.0.0.0", port=80)
