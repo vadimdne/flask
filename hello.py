@@ -21,10 +21,10 @@ def login_form():
 @app.route("/")
 def showtasks():
     if request.cookies.get('islogged'):
-        response = "Hello " + request.cookies.get('username') + "! Here are your tasks: \n"
+        response = "Hello " + request.cookies.get('username') + "! Here are your tasks: <br>"
         for task in TASKS:
             if task["owner"] == request.cookies.get('username'):
-                response = response + task["title"] + '\n'
+                response = response + task["title"] + '<br>'
         return response
     else:
         return redirect("/login/form", code=302)
