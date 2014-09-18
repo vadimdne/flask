@@ -24,7 +24,7 @@ def hello():
     else:
         return redirect("/login/form", code=302)
 
-@app.route("/login")
+@app.route("/login", methods=['POST'])
 def login():
     if request.form['username'] in USERS and USERS[request.form['username']] == request.form['password']:
         response = make_response(redirect("/", code=302))
