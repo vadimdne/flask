@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import redirect
 from flask import make_response
+from tasks import TASKS
 
 USERS = {
     "vadim": "vadim",
@@ -18,9 +19,13 @@ def login_form():
     </form>"""
 
 @app.route("/")
-def hello():
+def showtasks():
     if request.cookies.get('islogged'):
-        return "Hello " + request.cookies.get('username')
+        response = "Hello " + request.cookies.get('username') + "! Here are your tasks:"
+        for task in TASKS:
+            if task.owner == request.cookies.get('username'):
+                response = response + task
+        return response
     else:
         return redirect("/login/form", code=302)
 
@@ -34,5 +39,5 @@ def login():
     else:
         return redirect("/login/form", code=302)
 
-if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=80)
