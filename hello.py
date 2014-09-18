@@ -20,7 +20,7 @@ def login_form():
 @app.route("/")
 def hello():
     if request.cookies.get('islogged'):
-        return "Hello World!"
+        return "Hello " + request.cookies.get('username')
     else:
         return redirect("/login/form", code=302)
 
@@ -29,6 +29,7 @@ def login():
     if request.form['username'] in USERS and USERS[request.form['username']] == request.form['password']:
         response = make_response(redirect("/", code=302))
         response.set_cookie('islogged', 'TRUE')
+        response.set_cookie('username', request.form['username'])
         return response
     else:
         return redirect("/login/form", code=302)
