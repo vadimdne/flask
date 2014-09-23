@@ -13,7 +13,7 @@ TASKS = [
     },
     {
         "owner": "vadim",
-        "title": "Connect to Database",
+        "title": "Connect to Postgre Database",
         "date": "14-10-2014",
         "isopen": "True",
     },
@@ -38,6 +38,10 @@ TASKS = [
 ]
 
 if __name__ == "__main__":
+    response = ""
     for task in TASKS:
-        print task
+        if task["owner"] == "vadim":
+        #    print task
+            response = response + task["title"] + '\n'
+    print response
 
