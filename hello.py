@@ -50,5 +50,5 @@ def add_task():
     response = make_response(redirect("/", code=302))
     return response
 
-app.run(debug=True)
-#app.run(host="0.0.0.0", port=80)
+#app.run(debug=True)
+app.run(host="0.0.0.0", port=80)
