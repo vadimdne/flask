@@ -10,9 +10,11 @@
 
 <ul id="tasklist">
     {% for task in tasks %}
-        <li>{{ task.title }}</li>
+        <li>{{ task.title }} {{ task.date }}</li>
     {% endfor %}
 </ul>
+
+<a href="/addtask/form">+ add task</a>
 
 </body>
 </html>
