@@ -6,15 +6,17 @@
 </head>
 <body>
 
-<p> Hello {{ username }}! Here are your tasks: </p>
+<p> Hello {{ username[0] }}! Here are your tasks: </p>
 
 <ul id="tasklist">
     {% for task in tasks %}
-        <li>{{ task.title }} {{ task.date }}</li>
+        <li>{{ task.id }}. {{ task.name }}</li>
     {% endfor %}
 </ul>
 
 <a href="/task/add/form">+ add task</a>
+<br>
+<a href="/logout">logout</a>
 
 </body>
 </html>
