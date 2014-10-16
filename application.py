@@ -5,6 +5,7 @@ from flask import make_response
 from flask import render_template
 from functools import wraps
 from user import User
+from task import Task
 
 # Todo move routes to one place
 # Todo close db connection in proper place
@@ -53,6 +54,28 @@ def add_task():
     user = User(request.cookies.get('username'))
     tasklist = user.get_first_tasklist()
     tasklist.add_task(request.form['task_name'])
+    response = make_response(redirect("/", code=302))
+    return response
+
+@app.route("/task/edit/form/<int:task_id>")
+@authorized
+def edit_task_form(task_id):
+    task = Task(task_id)
+    return render_template('edit_task.html', task=task)
+
+@app.route("/task/edit/<int:task_id>", methods=['POST'])
+@authorized
+def edit_task(task_id):
+    task = Task(task_id)
+    task.edit(request.form['task_name'])
+    response = make_response(redirect("/", code=302))
+    return response
+
+@app.route("/task/delete/<int:task_id>")
+@authorized
+def delete_task(task_id):
+    task = Task(task_id)
+    task.delete()
     response = make_response(redirect("/", code=302))
     return response
 

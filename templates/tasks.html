@@ -10,7 +10,7 @@
 
 <ul id="tasklist">
     {% for task in tasks %}
-        <li>{{ task.id }}. {{ task.name }}</li>
+        <li>{{ task.id }}. {{ task.name }} <a href="/task/edit/form/{{task.id}}">edit</a> <a href="/task/delete/{{ task.id }}">delete</a> </li>
     {% endfor %}
 </ul>
 
