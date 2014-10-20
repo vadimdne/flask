@@ -4,6 +4,7 @@ import sqlite3
 DATABASE = "F:\\tasks.db"
 
 conn = sqlite3.connect(DATABASE, check_same_thread=False)
+conn.isolation_level = None
 cur = conn.cursor()
 
 if __name__ == "__main__":
@@ -45,4 +46,3 @@ if __name__ == "__main__":
     INSERT INTO task (id, name, tasklist_id) VALUES (4, 'The task from secondary tasklist', 2);
     INSERT INTO task (id, name, tasklist_id) VALUES (5, 'Yeah one more task', 2);
     """)
-    conn.commit()

@@ -6,8 +6,8 @@
 </head>
 <body>
 
-<form action="/task/edit/{{task.get_id()}}" method="POST">
-    task name: <input type="text" name="task_name" value="{{task.get_name()}}">
+<form action="/task/edit/{{task.id}}" method="POST">
+    task name: <input type="text" name="task_name" value="{{task.name}}">
     <input type="submit" value="edit task">
     </form>
 

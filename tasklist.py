@@ -8,11 +8,11 @@ class Tasklist:
         self.id = tasklist_id
         self.name = cur.execute('SELECT name FROM tasklist WHERE id=?', (self.id,)).fetchone()[0]
 
-    def get_id(self):
-        return self.id
+    def edit(self, tasklist_name):
+        cur.execute('UPDATE tasklist SET name = ? WHERE id =?', (tasklist_name, self.id))
 
-    def get_name(self):
-        return self.name
+    def delete(self):
+        cur.execute('DELETE FROM tasklist WHERE id=?', (self.id,))
 
     def get_tasks(self):
         tasks = []
@@ -22,6 +22,5 @@ class Tasklist:
 
     def add_task(self, task_name):
         cur.execute('INSERT INTO task (name, tasklist_id) VALUES (?,?)', (task_name, self.id))
-        conn.commit()
 
 

@@ -5,6 +5,7 @@ from flask import make_response
 from flask import render_template
 from functools import wraps
 from user import User
+from tasklist import Tasklist
 from task import Task
 
 # Todo move routes to one place
@@ -32,27 +33,52 @@ def login():
         return redirect("/login/form", code=302)
     response = make_response(redirect("/", code=302))
     response.set_cookie('islogged', 'true')                                 # Todo fix the ability to hack cookies
-    response.set_cookie('username', user.get_username())
+    response.set_cookie('username', user.username)
     return response
 
 @app.route("/")
 @authorized
 def showtasks():
     user = User(request.cookies.get('username'))
-    tasklist = user.get_first_tasklist()
-    tasks = tasklist.get_tasks()                                            # Todo handle several tasklists
-    return render_template('tasks.html', username=user.get_username(), tasks=tasks)
+    tasklists = user.get_tasklists()
+    return render_template('tasks.html', user=user, tasklists=tasklists)
 
-@app.route("/task/add/form")
+@app.route("/tasklist/add/form")
 @authorized
-def add_task_form():
-    return render_template('add_task.html')
+def add_tasklist_form():
+    return render_template('add_tasklist.html')
 
-@app.route("/task/add", methods=['POST'])
+@app.route("/tasklist/add", methods=['POST'])
 @authorized
-def add_task():
+def add_tasklist():
     user = User(request.cookies.get('username'))
-    tasklist = user.get_first_tasklist()
+    user.add_tasklist(request.form['tasklist_name'])
+    response = make_response(redirect("/", code=302))
+    return response
+
+@app.route("/tasklist/edit/form/<int:tasklist_id>")
+@authorized
+def edit_tasklist_form(tasklist_id):
+    tasklist = Tasklist(tasklist_id)
+    return render_template('edit_tasklist.html', tasklist=tasklist)
+
+@app.route("/tasklist/edit/<int:tasklist_id>", methods=['POST'])
+@authorized
+def edit_tasklist(tasklist_id):
+    tasklist = Tasklist(tasklist_id)
+    tasklist.edit(request.form['tasklist_name'])
+    response = make_response(redirect("/", code=302))
+    return response
+
+@app.route("/task/add/form/<int:tasklist_id>")
+@authorized
+def add_task_form(tasklist_id):
+    return render_template('add_task.html', tasklist_id=tasklist_id)
+
+@app.route("/task/add/<int:tasklist_id>", methods=['POST'])
+@authorized
+def add_task(tasklist_id):
+    tasklist = Tasklist(tasklist_id)
     tasklist.add_task(request.form['task_name'])
     response = make_response(redirect("/", code=302))
     return response
