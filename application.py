@@ -10,6 +10,8 @@ from task import Task
 
 # Todo move routes to one place
 # Todo close db connection in proper place
+# Todo move controllers in separate files
+# Todo use url_for in views
 
 app = Flask(__name__)
 
@@ -21,9 +23,8 @@ def authorized(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route("/login/form")
-def login_form():
-    return render_template('login_form.html')
+from controllers import login_form
+app.add_url_rule("/login/form", endpoint="login_form", view_func=login_form.Controller.handle_request)
 
 @app.route("/login", methods=['POST'])
 def login():
@@ -48,13 +49,9 @@ def showtasks():
 def add_tasklist_form():
     return render_template('add_tasklist.html')
 
-@app.route("/tasklist/add", methods=['POST'])
-@authorized
-def add_tasklist():
-    user = User(request.cookies.get('username'))
-    user.add_tasklist(request.form['tasklist_name'])
-    response = make_response(redirect("/", code=302))
-    return response
+from controllers import add_tasklist
+add_tasklist_controller = add_tasklist.Controller(User)
+app.add_url_rule("/tasklist/add", endpoint="add_tasklist", view_func=authorized(add_tasklist_controller.handle_request), methods=['POST'])
 
 @app.route("/tasklist/edit/form/<int:tasklist_id>")
 @authorized
