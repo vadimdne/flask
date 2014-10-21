@@ -26,38 +26,26 @@ def authorized(f):
 from controllers import login_form
 app.add_url_rule("/login/form", endpoint="login_form", view_func=login_form.Controller.handle_request)
 
-@app.route("/login", methods=['POST'])
-def login():
-    user = User(request.form['username'])
-    password = user.get_password()
-    if password == None or password != request.form['password']:            # Todo encrypt password
-        return redirect("/login/form", code=302)
-    response = make_response(redirect("/", code=302))
-    response.set_cookie('islogged', 'true')                                 # Todo fix the ability to hack cookies
-    response.set_cookie('username', user.username)
-    return response
+from controllers import login
+login_controller = login.Controller(User)
+app.add_url_rule("/login", endpoint="login", view_func=login_controller.handle_request, methods=['POST'])
 
-@app.route("/")
-@authorized
-def showtasks():
-    user = User(request.cookies.get('username'))
-    tasklists = user.get_tasklists()
-    return render_template('tasks.html', user=user, tasklists=tasklists)
+from controllers import show_dashboard
+show_dashboard_controller = show_dashboard.Controller(User)
+app.add_url_rule("/", endpoint="show_dashboard", view_func=authorized(show_dashboard_controller.handle_request))
 
-@app.route("/tasklist/add/form")
-@authorized
-def add_tasklist_form():
-    return render_template('add_tasklist.html')
+from controllers import tasklist_add_form
+app.add_url_rule("/tasklist/add/form", endpoint="tasklist_add_form", view_func=authorized(tasklist_add_form.Controller.handle_request))
 
-from controllers import add_tasklist
-add_tasklist_controller = add_tasklist.Controller(User)
+from controllers import tasklist_add
+add_tasklist_controller = tasklist_add.Controller(User)
 app.add_url_rule("/tasklist/add", endpoint="add_tasklist", view_func=authorized(add_tasklist_controller.handle_request), methods=['POST'])
 
 @app.route("/tasklist/edit/form/<int:tasklist_id>")
 @authorized
 def edit_tasklist_form(tasklist_id):
     tasklist = Tasklist(tasklist_id)
-    return render_template('edit_tasklist.html', tasklist=tasklist)
+    return render_template('tasklist_edit.html', tasklist=tasklist)
 
 @app.route("/tasklist/edit/<int:tasklist_id>", methods=['POST'])
 @authorized
@@ -70,7 +58,7 @@ def edit_tasklist(tasklist_id):
 @app.route("/task/add/form/<int:tasklist_id>")
 @authorized
 def add_task_form(tasklist_id):
-    return render_template('add_task.html', tasklist_id=tasklist_id)
+    return render_template('task_add.html', tasklist_id=tasklist_id)
 
 @app.route("/task/add/<int:tasklist_id>", methods=['POST'])
 @authorized
@@ -84,7 +72,7 @@ def add_task(tasklist_id):
 @authorized
 def edit_task_form(task_id):
     task = Task(task_id)
-    return render_template('edit_task.html', task=task)
+    return render_template('task_edit.html', task=task)
 
 @app.route("/task/edit/<int:task_id>", methods=['POST'])
 @authorized
