@@ -6,12 +6,12 @@ from helpers.auth import authorized
 
 
 class Controller(object):
-    def __init__(self, user_model_cls):
-        self.user_model_cls = user_model_cls
+    def __init__(self, tasklist_model_cls):
+        self.tasklist_model_cls = tasklist_model_cls
 
     @authorized
-    def handle_request(self):
-        user = self.user_model_cls(request.cookies.get('username'))
-        user.add_tasklist(request.form['tasklist_name'])
+    def handle_request(self, tasklist_id):
+        tasklist = self.tasklist_model_cls(tasklist_id)
+        tasklist.add_task(request.form['task_name'])
         response = make_response(redirect("/", code=302))
         return response

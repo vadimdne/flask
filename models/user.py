@@ -1,6 +1,7 @@
 __author__ = 'vti'
 from datamodel import cur
-from tasklist import Tasklist
+from models.tasklist import Tasklist
+
 
 class User:
     def __init__(self, username):

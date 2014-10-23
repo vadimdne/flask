@@ -1,7 +1,7 @@
 __author__ = 'vti'
+from datamodel import cur
+from models.task import Task
 
-from datamodel import conn, cur
-from task import Task
 
 class Tasklist:
     def __init__(self, tasklist_id):

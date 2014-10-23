@@ -1,6 +1,6 @@
 __author__ = 'vti'
+from datamodel import cur
 
-from datamodel import conn, cur
 
 class Task:
     def __init__(self, task_id):
