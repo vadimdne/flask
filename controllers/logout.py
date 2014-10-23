@@ -4,8 +4,7 @@ from flask import make_response
 
 
 class Controller(object):
-    @staticmethod
-    def handle_request():
+    def handle_request(self):
         response = make_response(redirect("/", code=302))
         response.set_cookie('islogged', 'false')
         return response

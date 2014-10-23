@@ -3,6 +3,5 @@ from flask import render_template
 
 
 class Controller(object):
-    @staticmethod
-    def handle_request():
+    def handle_request(self):
         return render_template('login.html')

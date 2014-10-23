@@ -6,20 +6,22 @@
 </head>
 <body>
 
-<p> Hello {{ user.username }}! <a href="/logout">logout</a> </p>
+<p> Hello {{ user.username }}! <a href="{{url_for('logout')}}">logout</a> </p>
 
 {% for tasklist in tasklists %}
-<h4>{{tasklist.name}} <a href="/tasklist/edit/form/{{tasklist.id}}">edit</a></h4>
+<h4>{{tasklist.name}} <a href="{{url_for('tasklist_edit_form', tasklist_id=tasklist.id)}}">edit</a></h4>
 <ul id="tasklist">
     {% for task in tasklist.get_tasks() %}
-        <li>{{ task.id }}. {{ task.name }} <a href="/task/edit/form/{{task.id}}">edit</a> <a href="/task/delete/{{ task.id }}">delete</a> </li>
+        <li>{{ task.id }}. {{ task.name }}
+            <a href="{{url_for('task_edit_form', task_id=task.id)}}">edit</a>
+            <a href="{{url_for('task_delete', task_id=task.id)}}">delete</a> </li>
     {% endfor %}
 </ul>
-<a href="/task/add/form/{{tasklist.id}}">+ add task</a>
+<a href="{{url_for('task_add_form', tasklist_id=tasklist.id)}}">+ add task</a>
 {% endfor %}
 <br>
 <br>
-<a href="/tasklist/add/form">+ ADD TASKLIST</a>
+<a href="{{url_for('tasklist_add_form')}}">+ ADD TASKLIST</a>
 
 
 </body>

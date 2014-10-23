@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form action="/task/add/{{tasklist_id}}" method="POST">
+<form action="{{url_for('task_add', tasklist_id=tasklist.id)}}" method="POST">
     task name: <input type="text" name="task_name">
     <input type="submit" value="add task">
     </form>

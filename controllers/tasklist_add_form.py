@@ -4,7 +4,6 @@ from helpers.auth import authorized
 
 
 class Controller(object):
-    @staticmethod
     @authorized
-    def handle_request():
+    def handle_request(self):
         return render_template('tasklist_add.html')
