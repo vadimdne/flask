@@ -1,4 +1,6 @@
 __author__ = 'vti'
+import hashlib
+import uuid
 from datamodel import cur
 from models.tasklist import Tasklist
 
@@ -10,6 +12,14 @@ class User:
 
     def get_password(self):
         return cur.execute('SELECT password FROM user WHERE id=?', (self.id,)).fetchone()[0]
+
+    def verify_password(self, password_attempt):
+        salt = cur.execute('SELECT salt FROM user WHERE id=?', (self.id,)).fetchone()[0]
+        hashed = cur.execute('SELECT hash FROM user WHERE id=?', (self.id,)).fetchone()[0]
+        if hashlib.sha512(salt+password_attempt).hexdigest() == hashed:
+            return True
+        else:
+            return False
 
     def get_first_tasklist(self):
         tasklist_id = cur.execute('SELECT id FROM tasklist WHERE user_id=?', (self.id,)).fetchone()[0]

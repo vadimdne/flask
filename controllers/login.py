@@ -10,8 +10,7 @@ class Controller(object):
 
     def handle_request(self):
         user = self.user_model_cls(request.form['username'])
-        password = user.get_password()
-        if password == None or password != request.form['password']:            # Todo encrypt password
+        if not user.verify_password(request.form['password']):
             return redirect("/login/form", code=302)
         response = make_response(redirect("/", code=302))
         response.set_cookie('islogged', 'true')                                 # Todo fix the ability to hack cookies

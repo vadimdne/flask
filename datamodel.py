@@ -1,7 +1,7 @@
 __author__ = 'vti'
 import sqlite3
 
-DATABASE = "F:\\tasks.db"
+DATABASE = "tasks.db"
 
 conn = sqlite3.connect(DATABASE, check_same_thread=False)
 conn.isolation_level = None
@@ -13,12 +13,13 @@ if __name__ == "__main__":
     CREATE TABLE user(
       id INT PRIMARY KEY NOT NULL,
       username TEXT NOT NULL,
-      password TEXT NOT NULL
+      salt TEXT NOT NULL,
+      hash TEXT NOT NULL
     );
 
-    INSERT INTO user (id, username, password) VALUES (1, 'vadim', 'vadim');
-    INSERT INTO user (id, username, password) VALUES (2, 'roman', 'roman');
-    INSERT INTO user (id, username, password) VALUES (3, 'igor', 'igor');
+    INSERT INTO user (id, username, salt, hash) VALUES (1, 'vadim', '12d11ce1a7034ace98524615686882e2', 'bd95de4d6c2127db6132684798c1a8fdc9fa861a612b01f3f932caf58576a02991d2b16e919058d1bbd45586ba8cb985c121101d4574f4270d04d37e582a8464');
+    INSERT INTO user (id, username, salt, hash) VALUES (2, 'roman', '981e31eede3b4735b14621137e270249', 'b2f58a58cd6cd8eb7cc99180904cd579756ee8b7f77557da38890fe00ed43d42da33d21dbdee35e8651683ee8ce073abb81f1e8015f07162a1bc61e4f96c2aaa');
+    INSERT INTO user (id, username, salt, hash) VALUES (3, 'igor', '8737062506eb4be78e3466ccc95a0c18', '3258b9e2ad1f2b4bec0334951f96dd52d831ed287e40a629bf3a39a8ba0fe529bb9ae3b103702b7f372e6d0442b523ecfffd29f252ef95d4f9e793087bae6e1d');
 
     DROP TABLE IF EXISTS tasklist;
     CREATE TABLE tasklist(
