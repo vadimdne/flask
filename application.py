@@ -91,7 +91,7 @@ bind_controller(app=app,
 
 bind_controller(app=app,
                 rule='/logout',
-                controller=logout.Controller(),
+                controller=logout.Controller(User),
                 methods=['GET'])
 
 if __name__ == "__main__":

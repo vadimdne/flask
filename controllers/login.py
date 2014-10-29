@@ -13,6 +13,6 @@ class Controller(object):
         if not user.verify_password(request.form['password']):
             return redirect("/login/form", code=302)
         response = make_response(redirect("/", code=302))
-        response.set_cookie('islogged', 'true')                                 # Todo fix the ability to hack cookies
         response.set_cookie('username', user.username)
+        response.set_cookie('session_id', user.session_id)
         return response
