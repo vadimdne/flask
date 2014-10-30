@@ -52,10 +52,6 @@ class User:
         else:
             return False
 
-    def get_first_tasklist(self):
-        tasklist_id = cur.execute('SELECT id FROM tasklist WHERE user_id=?', (self.id,)).fetchone()[0]
-        return Tasklist(tasklist_id)
-
     def get_tasklists(self):
         tasklists = []
         for tasklist_id in cur.execute('SELECT id FROM tasklist WHERE user_id=?', (self.id,)).fetchall():
