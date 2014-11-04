@@ -12,6 +12,7 @@ from controllers import task_edit_form
 from controllers import task_edit
 from controllers import task_delete
 from controllers import logout
+from models.session import Session
 from models.user import User
 from models.tasklist import Tasklist
 from models.task import Task
@@ -36,7 +37,7 @@ bind_controller(app=app,
 
 bind_controller(app=app,
                 rule='/login',
-                controller=login.Controller(User),
+                controller=login.Controller(user_model_cls=User, session_model_cls=Session),
                 methods=['POST'])
 
 bind_controller(app=app,
@@ -91,7 +92,7 @@ bind_controller(app=app,
 
 bind_controller(app=app,
                 rule='/logout',
-                controller=logout.Controller(User),
+                controller=logout.Controller(Session),
                 methods=['GET'])
 
 if __name__ == "__main__":
